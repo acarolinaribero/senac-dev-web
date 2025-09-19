@@ -1,31 +1,42 @@
-﻿using MeuCorre.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
+using MeuCorre.Domain.Enums;
 
 namespace MeuCorre.Domain.Entities
 {
     public class Categoria : Entidade
     {
         public Guid UsuarioId { get; private set; }
-        public string Nome { get;  private set; }
-        public string? Descricao { get;private set; }
+        public string Nome { get; private set; }
+        public string? Descricao  { get; private set; }
         public string? Cor { get; private set; }
         public string? Icone { get; private set; }
-        public bool Ativo { get; private set; }
         public TipoTransacao TipoDaTransacao { get; private set; }
+        public bool Ativo { get; private set; }
 
+        // Propriedade de navegação para a entidade Usuario pois
+        // o usuário pode ter várias categorias
+        public virtual Usuario Usuario { get; private set; }
 
-
-        public void AtualizarInformacoes(string nome, string? descricao, string? cor, string? icone, bool ativo, TipoTransacao tipoDaTransacao)
+        public Categoria(Guid usuarioId, string nome, TipoTransacao tipoDaTransacao, string? descricao, string? cor, string? icone)
         {
-            Nome = nome;
+            ValidarEntidadeCategoria(cor);
+
+            UsuarioId = usuarioId;
+            Nome = nome.ToUpper();
             Descricao = descricao;
             Cor = cor;
             Icone = icone;
-            Ativo = ativo;
+            TipoDaTransacao = tipoDaTransacao;
+            Ativo = true;
+        }
+
+        public void AtualizarInformacoes(string nome, TipoTransacao tipoDaTransacao,
+                                         string descricao, string cor, string icone)
+        {
+            Nome = nome.ToUpper();
+            Descricao = descricao;
+            Cor = cor;
+            Icone = icone;
             TipoDaTransacao = tipoDaTransacao;
             AtualizarDataMoficacao();
         }
@@ -39,6 +50,22 @@ namespace MeuCorre.Domain.Entities
         {
             Ativo = false;
             AtualizarDataMoficacao();
+        }
+
+        private void ValidarEntidadeCategoria(string cor)
+        {
+            if (string.IsNullOrEmpty(cor))
+            {
+                return; //retorna caso a cor seja nula ou vazia
+            }
+
+            //#FF02AB
+            var corRegex = new Regex(@"^#?([0-9a-fA-F]{3}){1,2}$");
+
+            if (!corRegex.IsMatch(cor))
+            {
+                throw new Exception("A cor deve estar no formato hexadecimal");
+            }
         }
     }
 }
