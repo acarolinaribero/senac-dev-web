@@ -1,11 +1,6 @@
 ﻿using MeuCorre.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MeuCorre.Domain.Interface.Repository
+namespace MeuCorre.Domain.Interfaces.Repositories
 {
     public interface IUsuarioRepository
     {
@@ -16,5 +11,7 @@ namespace MeuCorre.Domain.Interface.Repository
         //? significa que o select pode retornar nulo, ou seja,
         //o usuário pode não ser encontrado
         Task<Usuario?> ObterUsuarioPorEmail(string email);
+        Task<Usuario?> ObterUsuarioPorId(Guid id);
+
     }
 }
