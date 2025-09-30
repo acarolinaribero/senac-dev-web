@@ -1,4 +1,5 @@
 ﻿
+using MeuCorre.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,9 @@ namespace MeuCorre.Domain.Entities
         public string? Cor { get; private set; }
         public string? Icone { get; private set; }
         public DateTime? DataAtualizacao { get; private set; }
+        public TipoLimite? TipoLimite { get; private set; }
+
+
 
         public virtual Usuario Usuario { get; private set; }
 
@@ -89,6 +93,13 @@ namespace MeuCorre.Domain.Entities
         {
             DataAtualizacao = DateTime.UtcNow;
         }
+
+        public void DefinirTipoLimite(TipoLimite? tipoLimite)
+        {
+            TipoLimite = tipoLimite;
+            AtualizarData();
+        }
+
     }
 }
 
