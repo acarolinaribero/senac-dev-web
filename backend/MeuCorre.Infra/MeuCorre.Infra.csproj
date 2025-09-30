@@ -20,7 +20,6 @@
     <Folder Include="Data\Migrations\" />
     <Folder Include="Data\Seeds\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Migrations\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
