@@ -1,5 +1,6 @@
 ﻿using MeuCorre.Domain.Enums;
 using System;
+using System.Text.RegularExpressions;
 
 namespace MeuCorre.Domain.Entities
 {
@@ -7,7 +8,7 @@ namespace MeuCorre.Domain.Entities
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
-        public string Tipo { get; set; }
+        public TipoConta Tipo { get; set; } // Changed from string to TipoConta
         public decimal Saldo { get; set; }
         public Guid UsuarioId { get; set; }
         public bool Ativo { get; set; }
@@ -23,9 +24,7 @@ namespace MeuCorre.Domain.Entities
 
         public virtual Usuario Usuario { get; set; }
 
-    
-        
-        public Conta(Guid id, string nome, string tipo, decimal saldo, Guid usuarioId)
+        public Conta(Guid id, string nome, TipoConta tipo, decimal saldo, Guid usuarioId) // Updated constructor parameter
         {
             Id = id;
             Nome = nome;
@@ -42,7 +41,7 @@ namespace MeuCorre.Domain.Entities
             AtualizarData();
         }
 
-        public void AtualizarTipo(string tipo)
+        public void AtualizarTipo(TipoConta tipo) // Updated parameter type
         {
             Tipo = tipo;
             AtualizarData();
@@ -89,6 +88,27 @@ namespace MeuCorre.Domain.Entities
         private void AtualizarData()
         {
             DataAtualizacao = DateTime.UtcNow;
+        }
+
+        public void Validar()
+        {
+            if (string.IsNullOrWhiteSpace(Nome))
+                throw new ArgumentException("Nome da conta é obrigatório.");
+
+            if (Nome.Length < 2 || Nome.Length > 50)
+                throw new ArgumentException("Nome deve ter entre 2 e 50 caracteres.");
+
+            if (Tipo == TipoConta.CartaoCredito) 
+            {
+                if (!Limite.HasValue || Limite <= 0)
+                    throw new ArgumentException("Limite é obrigatório e deve ser maior que zero para cartão.");
+
+                if (!DiaVencimento.HasValue || DiaVencimento < 1 || DiaVencimento > 31)
+                    throw new ArgumentException("Dia de vencimento deve estar entre 1 e 31.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(Cor) && !Regex.IsMatch(Cor, "^#([A-Fa-f0-9]{6})$"))
+                throw new ArgumentException("Cor inválida. Use o formato #RRGGBB.");
         }
     }
 }

@@ -13,5 +13,7 @@ namespace Application.Interfaces
         Task<Conta?> ObterPorIdEUsuarioAsync(Guid contaId, Guid usuarioId);
         Task<bool> ExisteContaComNomeAsync(Guid usuarioId, string nome, Guid? contaIdExcluir = null);
         Task<decimal> CalcularSaldoTotalAsync(Guid usuarioId);
+        Task ListarPorUsuarioAsync(Guid usuarioId);
+        Task AdicionarAsync(Conta conta);
     }
 }
