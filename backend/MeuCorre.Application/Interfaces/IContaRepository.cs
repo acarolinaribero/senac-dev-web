@@ -15,5 +15,6 @@ namespace Application.Interfaces
         Task<decimal> CalcularSaldoTotalAsync(Guid usuarioId);
         Task ListarPorUsuarioAsync(Guid usuarioId);
         Task AdicionarAsync(Conta conta);
+        Task ObterPorIdAsync(Guid contaId);
     }
 }

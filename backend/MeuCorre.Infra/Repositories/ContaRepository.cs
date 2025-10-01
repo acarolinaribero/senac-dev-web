@@ -78,5 +78,10 @@ namespace MeuCorre.Infra.Repositories
         {
             return ListarPorUsuarioAsync(usuarioId);
         }
+
+        Task IContaRepository.ObterPorIdAsync(Guid contaId)
+        {
+            return ObterPorIdAsync(contaId);
+        }
     }
 }
