@@ -1,6 +1,7 @@
-﻿using MeuCorre.Domain.Interfaces.Repositories;
-using MeuCorre.Infra.Repositories;
+﻿using Application.Interfaces;
+using MeuCorre.Domain.Interfaces.Repositories;
 using MeuCorre.Infra.Data.Context;
+using MeuCorre.Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +15,8 @@ public static class DependencyInjection
         services.AddDbContext<MeuDbContext>(options =>
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-        // ✅ Registro dos repositórios
-        services.AddScoped<ContaRepository, ContaRepository>();
+      
+        services.AddScoped<IContaRepository, ContaRepository>();
         services.AddScoped<ICategoriaRepository, CategoriaRepository>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 

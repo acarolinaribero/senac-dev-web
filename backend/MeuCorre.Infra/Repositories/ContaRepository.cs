@@ -16,19 +16,60 @@ namespace MeuCorre.Infra.Repositories
             _context = context;
         }
 
-        public async Task<Conta?> ObterPorIdAsync(Guid id)
+        public async Task<List<Conta>> ObterPorUsuarioAsync(Guid usuarioId, bool apenasAtivas = true)
         {
-            return await _context.Contas
-                .Include(c => c.Usuario) 
-                .FirstOrDefaultAsync(c => c.Id == id);
+            var query = _context.Contas.Where(c => c.UsuarioId == usuarioId);
+
+            if (apenasAtivas)
+                query = query.Where(c => c.Ativo);
+
+            return await query.ToListAsync();
         }
 
-        public async Task<IList<Conta>> ListarPorUsuarioAsync(Guid usuarioId)
+        public async Task<List<Conta>> ObterPorTipoAsync(Guid usuarioId, TipoConta tipo)
+        {
+            return await _context.Contas
+                .Where(c => c.UsuarioId == usuarioId && c.Tipo == tipo)
+                .ToListAsync();
+        }
+
+        public async Task<Conta?> ObterPorIdEUsuarioAsync(Guid contaId, Guid usuarioId)
+        {
+            return await _context.Contas
+                .FirstOrDefaultAsync(c => c.Id == contaId && c.UsuarioId == usuarioId);
+        }
+
+        public async Task<bool> ExisteContaComNomeAsync(Guid usuarioId, string nome, Guid? contaIdExcluir = null)
+        {
+            var query = _context.Contas
+                .Where(c => c.UsuarioId == usuarioId && c.Nome == nome);
+
+            if (contaIdExcluir.HasValue)
+                query = query.Where(c => c.Id != contaIdExcluir.Value);
+
+            return await query.AnyAsync();
+        }
+
+        public async Task<decimal> CalcularSaldoTotalAsync(Guid usuarioId)
+        {
+            return await _context.Contas
+                .Where(c => c.UsuarioId == usuarioId && c.Ativo)
+                .SumAsync(c => c.Saldo);
+        }
+
+        public async Task<List<Conta>> ListarPorUsuarioAsync(Guid usuarioId)
         {
             return await _context.Contas
                 .Where(c => c.UsuarioId == usuarioId)
-                .OrderBy(c => c.Nome) 
+                .OrderBy(c => c.Nome)
                 .ToListAsync();
+        }
+
+        public async Task<Conta?> ObterPorIdAsync(Guid contaId)
+        {
+            return await _context.Contas
+                .Include(c => c.Usuario)
+                .FirstOrDefaultAsync(c => c.Id == contaId);
         }
 
         public async Task AdicionarAsync(Conta conta)
@@ -41,47 +82,6 @@ namespace MeuCorre.Infra.Repositories
         {
             _context.Contas.Update(conta);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task RemoverAsync(Conta conta)
-        {
-            _context.Contas.Remove(conta);
-            await _context.SaveChangesAsync();
-        }
-
-        public Task<List<Conta>> ObterPorUsuarioAsync(Guid usuarioId, bool apenasAtivas = true)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Conta>> ObterPorTipoAsync(Guid usuarioId, TipoConta tipo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Conta?> ObterPorIdEUsuarioAsync(Guid contaId, Guid usuarioId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> ExisteContaComNomeAsync(Guid usuarioId, string nome, Guid? contaIdExcluir = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<decimal> CalcularSaldoTotalAsync(Guid usuarioId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task IContaRepository.ListarPorUsuarioAsync(Guid usuarioId)
-        {
-            return ListarPorUsuarioAsync(usuarioId);
-        }
-
-        Task IContaRepository.ObterPorIdAsync(Guid contaId)
-        {
-            return ObterPorIdAsync(contaId);
         }
     }
 }
