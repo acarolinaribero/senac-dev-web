@@ -83,5 +83,10 @@ namespace MeuCorre.Infra.Repositories
             _context.Contas.Update(conta);
             await _context.SaveChangesAsync();
         }
+
+        public Task RemoverAsync(Conta conta)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

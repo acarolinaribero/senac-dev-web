@@ -10,7 +10,8 @@ namespace MeuCorre.Application.UseCases.Contas.Queries
         public Guid UsuarioId { get; set; }
         public TipoConta? FiltrarPorTipo { get; set; }
         public bool ApenasAtivas { get; set; } = true;
-        public string? OrdenarPor { get; set; } 
+        public string? OrdenarPor { get; set; }
+        public TipoConta? Tipo { get; set; }
     }
 
     public class ContaResumoResponse
