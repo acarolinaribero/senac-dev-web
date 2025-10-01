@@ -6,9 +6,11 @@ namespace MeuCorre.Domain.Entities
 {
     public class Conta : Entidade
     {
+        private string tipo;
+
         public Guid Id { get; set; }
         public string Nome { get; set; }
-        public TipoConta Tipo { get; set; } // Changed from string to TipoConta
+        public TipoConta Tipo { get; set; } 
         public decimal Saldo { get; set; }
         public Guid UsuarioId { get; set; }
         public bool Ativo { get; set; }
@@ -24,7 +26,7 @@ namespace MeuCorre.Domain.Entities
 
         public virtual Usuario Usuario { get; set; }
 
-        public Conta(Guid id, string nome, TipoConta tipo, decimal saldo, Guid usuarioId) // Updated constructor parameter
+        public Conta(Guid id, string nome, TipoConta tipo, decimal saldo, Guid usuarioId) 
         {
             Id = id;
             Nome = nome;
@@ -35,13 +37,21 @@ namespace MeuCorre.Domain.Entities
             DataCriacao = DateTime.UtcNow;
         }
 
+        public Conta(Guid id, string nome, string tipo, decimal saldo, Guid usuarioId) : base(id)
+        {
+            Nome = nome;
+            this.tipo = tipo;
+            Saldo = saldo;
+            UsuarioId = usuarioId;
+        }
+
         public void AtualizarNome(string nome)
         {
             Nome = nome;
             AtualizarData();
         }
 
-        public void AtualizarTipo(TipoConta tipo) // Updated parameter type
+        public void AtualizarTipo(TipoConta tipo) 
         {
             Tipo = tipo;
             AtualizarData();
