@@ -17,6 +17,7 @@ namespace Application.Interfaces
         Task<List<Conta>> ListarPorUsuarioAsync(Guid usuarioId); 
         Task<Conta?> ObterPorIdAsync(Guid contaId);              
         Task AdicionarAsync(Conta conta);
-        Task AtualizarAsync(Conta conta);                       
+        Task AtualizarAsync(Conta conta);
+        Task RemoverAsync(Conta conta);
     }
 }
