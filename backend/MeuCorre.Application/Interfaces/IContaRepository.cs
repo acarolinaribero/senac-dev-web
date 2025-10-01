@@ -14,9 +14,9 @@ namespace Application.Interfaces
         Task<bool> ExisteContaComNomeAsync(Guid usuarioId, string nome, Guid? contaIdExcluir = null);
         Task<decimal> CalcularSaldoTotalAsync(Guid usuarioId);
 
-        Task<List<Conta>> ListarPorUsuarioAsync(Guid usuarioId); // Corrigido: agora retorna lista
-        Task<Conta?> ObterPorIdAsync(Guid contaId);              // Corrigido: agora retorna Conta?
+        Task<List<Conta>> ListarPorUsuarioAsync(Guid usuarioId); 
+        Task<Conta?> ObterPorIdAsync(Guid contaId);              
         Task AdicionarAsync(Conta conta);
-        Task AtualizarAsync(Conta conta);                        // Corrigido: tipo correto
+        Task AtualizarAsync(Conta conta);                       
     }
 }
