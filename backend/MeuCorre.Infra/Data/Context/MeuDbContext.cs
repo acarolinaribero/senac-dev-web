@@ -36,8 +36,8 @@ namespace MeuCorre.Infra.Data.Context
             modelBuilder.Entity<Usuario>().HasData(new
             {
                 Id = usuarioId,
-                Nome = "Welton Castoldi",
-                Email = "weltoncastoldi@hotmail.com",
+                Nome = "Ana carolina Ribeiro",
+                Email = "ana",
                 Senha = "123456",
                 DataNascimento = new DateTime(1985, 7, 6),
                 Ativo = true,
